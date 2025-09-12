@@ -46,10 +46,18 @@ function generatePassword() {
   return password;
 }
 
-function copyToClipboard(pwdText) {
+function copyToClipboard(pwdText, targetEl) {
   navigator.clipboard.writeText(pwdText)
-    .then(() => alert("Copied to clipboard!"))
+    .then(() => showTooltip(targetEl, "Copied to clipboard!"))
     .catch(err => console.error("Failed to copy:", err));
+}
+
+function showTooltip(el, message) {
+  let tooltip = document.createElement("span");
+  tooltip.className = "tooltip";
+  tooltip.textContent = message;
+  el.appendChild(tooltip);
+  setTimeout(() => tooltip.remove(), 1000);
 }
 
 // ====== Event Listeners ======
@@ -59,5 +67,5 @@ generateBtn.addEventListener("click", () => {
 });
 
 passwordEls.forEach(el => {
-  el.addEventListener("click", () => copyToClipboard(el.textContent));
+  el.addEventListener("click", () => copyToClipboard(el.textContent, el));
 });
