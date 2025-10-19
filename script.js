@@ -1,71 +1,83 @@
-// ====== Config & Constants ======
+// ------ Constants ------
 
 const CHARSETS = {
-  letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""),
+  letters: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
   numbers: "0123456789".split(""),
-  symbols: "~`!@#$%^&*()_-+=[]{},|:;<>.?/".split("")
-}
+  symbols: "!@#$%^&*()_+~`|}{[]:;?><,./-=".split(""),
+};
 
-const MIN_PASSWORD_LENGTH = 6;
+const MIN_LENGTH = 6;
 
-// ====== DOM References ======
+// ------ Cache DOM elements ------
 
-const passwordLengthInput = document.getElementById("userpwd-length");
+const lengthEl = document.getElementById("length-el");
 const checkbox = {
-  letters: document.getElementById("include-letters"), 
+  letters: document.getElementById("include-letters"),
   numbers: document.getElementById("include-numbers"),
-  symbols: document.getElementById("include-symbols")
+  symbols: document.getElementById("include-symbols"),
 };
 const generateBtn = document.getElementById("generate-btn");
 const passwordEls = [
-  document.getElementById("password-one"),
-  document.getElementById("password-two")
-]
+  document.getElementById("password-el-one"),
+  document.getElementById("password-el-two"),
+];
 
-// ====== Functions ======
+// ------ Functions ------
 
-function getCharacterPool() {
-  let pool = [];
-  for (let key in checkbox) {
-    if (checkbox[key].checked) pool.push(...CHARSETS[key]); 
-  }
-  if (pool.length === 0) pool.push(...CHARSETS.letters); // fallback
-  return pool; 
+function getSelectedCharsets() {
+  const selectedCharsets = Object.keys(checkbox)
+    .filter((key) => checkbox[key].checked)
+    .map((key) => CHARSETS[key]);
+
+  return selectedCharsets.length ? selectedCharsets : [CHARSETS.letters];
 }
 
-function generatePassword() {
+function generatePassword(
+  passwordLength = MIN_LENGTH,
+  selectedCharsets = [CHARSETS.letters] // nested array
+) {
+  passwordLength = Math.max(passwordLength, MIN_LENGTH);
+  const flatSelectedCharset = selectedCharsets.flat();
+
   let password = "";
-  let length = parseInt(passwordLengthInput.value) || MIN_PASSWORD_LENGTH;
-  if (length < MIN_PASSWORD_LENGTH) length = MIN_PASSWORD_LENGTH;
 
-  const pool = getCharacterPool();
-  for (let i = 0; i < length; i++) {
-    password += pool[Math.floor(Math.random() * pool.length)];
+  // Ensure one character from each charset in case the same charset is generated
+  selectedCharsets.forEach((charsetArr) => {
+    password += charsetArr[Math.floor(Math.random() * charsetArr.length)];
+  });
+
+  // Fill remaining length randomly
+  for (let i = password.length; i < passwordLength; i++) {
+    password +=
+      flatSelectedCharset[
+        Math.floor(Math.random() * flatSelectedCharset.length)
+      ];
   }
 
-  return password;
+  // Fisher Yates Shuffle password randomly
+  const pwdArr = password.split("");
+  for (let i = pwdArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pwdArr[i], pwdArr[j]] = [pwdArr[j], pwdArr[i]];
+  }
+
+  return pwdArr.join("");
 }
 
-function copyToClipboard(pwdText, targetEl) {
-  navigator.clipboard.writeText(pwdText)
-    .then(() => showTooltip(targetEl, "Copied to clipboard!"))
-    .catch(err => console.error("Failed to copy:", err));
+function renderPasswords() {
+  const lengthElInt = parseInt(lengthEl.value) || MIN_LENGTH;
+  const selectedCharsets = getSelectedCharsets();
+
+  passwordEls.forEach((el) => {
+    el.textContent = generatePassword(lengthElInt, selectedCharsets);
+    el.style.cursor = "pointer";
+    el.onclick = () => {
+      navigator.clipboard.writeText(el.textContent);
+      alert("Copied to clipboard!");
+    };
+  });
 }
 
-function showTooltip(el, message) {
-  let tooltip = document.createElement("span");
-  tooltip.className = "tooltip";
-  tooltip.textContent = message;
-  el.appendChild(tooltip);
-  setTimeout(() => tooltip.remove(), 1000);
-}
+// ------ Event Listener ------
 
-// ====== Event Listeners ======
-
-generateBtn.addEventListener("click", () => {
-  passwordEls.forEach(el => el.textContent = generatePassword());
-});
-
-passwordEls.forEach(el => {
-  el.addEventListener("click", () => copyToClipboard(el.textContent, el));
-});
+generateBtn.addEventListener("click", renderPasswords);
