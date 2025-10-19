@@ -1,27 +1,39 @@
 # 🔑 Password Generator
 
-A simple **random password generator** built with **HTML, CSS, and JavaScript**.  
-It allows users to customize their passwords by including letters, numbers, and symbols, and easily copy them to the clipboard.
+A solo project from the [Scrimba Frontend Developer Career Path](https://scrimba.com/frontend-path-c0j).  
+This project is a **secure password generator** that allows users to quickly create strong, random passwords with customizable options. Users can set the password length, choose which character types to include, and copy generated passwords with a single click.
 
----
+## 🛠️ Technologies
+- HTML5  
+- CSS3  
+- JavaScript (ES6)
 
 ## 🚀 Features
-- Generate **two random passwords** at once
-- Choose password **length** (minimum 6 characters)
-- Toggle inclusion of:
-  - ✅ Letters (A–Z, a–z)
-  - ✅ Numbers (0–9)
-  - ✅ Symbols (~!@#$%^&* etc.)
-- Click a password to **copy it to the clipboard**
-- Tooltip feedback when password is copied
+- Generates **two random passwords** at a time.  
+- Users can **set password length** (minimum 6 characters).  
+- **Toggle options** to include/exclude:
+  - Letters  
+  - Numbers  
+  - Symbols  
+- **Click-to-copy** feature: click any password to automatically copy it to the clipboard.  
+- Responsive and interactive UI.
 
----
+## 🧠 What I Learned / Process
+- Practiced **DOM manipulation** and event handling in JavaScript.  
+- Learned how to **generate random values** from multiple character sets.  
+- Implemented **Fisher-Yates shuffle** to ensure truly randomized passwords.  
+- Added a **copy-to-clipboard feature** using the Clipboard API.  
+- Designed a **responsive UI** that adapts to different screen sizes.
 
-## 🛠️ Usage
-1. Open `index.html` in your browser.
-2. Set the desired password length.
-3. Select whether to include letters, numbers, and/or symbols.
-4. Click **Generate Passwords**.
-5. Click on a generated password to copy it.
+## 💡 Future Improvements
+- Add a **password strength indicator**.  
+- Allow **real-time password generation** as options are toggled.  
+- Include **more customization options** (e.g., exclude similar characters).
+- Add **dark/light mode toggle** for better UX.
 
----
+## 🖼️ Preview
+![Password Generator Screenshot](images/screenshot-passwordGenerator.png)
+
+## 📚 Sources & References
+- Scrimba course: [Scrimba Frontend Developer Career Path](https://scrimba.com/frontend-path-c0j)  
+- Figma Design reference by Scrimba: [View Figma Design](https://www.figma.com/design/NEj9JDycMjF3XKXq7swoc9/Random-Password-Generator--New-version-?node-id=0-1&p=f&t=j7NYSBlJlm9mrjGj-0)
