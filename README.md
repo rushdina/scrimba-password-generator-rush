@@ -32,7 +32,7 @@ This project is a **secure password generator** that allows users to quickly cre
 - Add **dark/light mode toggle** for better UX.
 
 ## 🖼️ Preview
-![Password Generator Screenshot](images/screenshot-passwordGenerator.png)
+![Password Generator Preview Screenshot](images/screenshot-passwordGenerator.png)
 
 ## 📚 Sources & References
 - Scrimba course: [Scrimba Frontend Developer Career Path](https://scrimba.com/frontend-path-c0j)  
